@@ -1,0 +1,8 @@
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import { combineReducers } from 'redux';
+import { test } from './Contact_Reducer';
+
+ export const allReducers=combineReducers({ user : test.ContactReducers})
+
+export default allReducers;

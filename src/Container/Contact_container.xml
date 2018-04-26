@@ -1,0 +1,32 @@
+import * as React from 'react';
+// import './App.css';
+// import {bindActionCreators} from 'redux';
+// import { connect } from 'react-redux';
+import 'office-ui-fabric-react/lib/components/TextField/examples/TextField.Examples.scss.js'
+
+
+
+export class UserList extends React.Component{
+    CreateList() {
+        // this.props.users.map(UserList)
+        // this.props.users.map((users:any) => {
+        //     return (
+        //         <li key={users.id}>{users.first}{users.last}</li>
+        //     )
+        // });
+    }
+    public render() {
+        return (
+            <ul>
+                {this.CreateList()};
+            </ul>
+
+        );
+    }
+}
+
+// function mapstateToprops(state:any) {
+//     return { users: state.users }
+// };
+
+// export default connect(mapstateToprops)(UserList);

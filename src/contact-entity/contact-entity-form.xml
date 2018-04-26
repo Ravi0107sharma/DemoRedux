@@ -1,0 +1,278 @@
+import * as React from 'react';
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
+import { DefaultButton, IButtonProps, CommandBarButton } from 'office-ui-fabric-react/lib/Button';
+import { CdsApiClient, ITokenAuthentication } from '../../../shared/services/temp/CdsApiClient';
+import { HostingEnvironment } from "../../../shared/services/temp/HostingEnvironment";
+import { ComponentType } from "../../../shared/services/temp/Contracts/ComponentContracts";
+import 'office-ui-fabric-react/lib/components/TextField/examples/TextField.Examples.scss.js'
+import { auth } from "../../../shared/tokenConfig";
+import { IComponentStory } from "./../../../../stories/types";
+import * as Entities from '../../../shared/services/temp/Contracts/Entity'
+// export const contactEntityForm: IComponentStory = {
+//   description: "Contact Entity Form",
+//   story: () => <ContactEntityFormDetails contactid="a3f562f6-7644-e811-a95a-000d3a3656df" />
+// };
+
+export interface IContact {
+  firstname: string,
+  middlename: string,
+  lastname: string,
+  telephone1: string,
+  emailaddress1: string,
+  address1_telephone1: string,
+  address1_line1: string,
+  address1_fax: string,
+  address1_telephone2: string,
+  address1_line2: string,
+  address1_line3: string,
+  address1_city: string,
+  address1_postalcode: string,
+  address1_stateorprovince: string
+  preferredcontactmethodcode: string,
+  jobtitle: string,
+  address1_country: string
+};
+export interface IContactState {
+  item: Entities.Contact;
+}
+let _item: Entities.Contact;
+export interface IContactProps { recordData?: Entities.Contact, onNavigateGrid?: Function }
+export class ContactEntityFormDetails extends React.Component<IContactProps, IContactState> {
+  constructor(props) {
+    super(props);
+    if (this.props.recordData == undefined) {
+      _item = {
+        firstname: null,
+        middlename: null,
+        lastname: null,
+        telephone1: null,
+        emailaddress1: null,
+        address1_telephone1: null,
+        address1_line1: null,
+        address1_fax: null,
+        address1_telephone2: null,
+        address1_line2: null,
+        address1_line3: null,
+        address1_city: null,
+        address1_postalcode: null,
+        preferredcontactmethodcode: null,
+        jobtitle: null,
+        address1_country: null,
+        address1_stateorprovince: null,
+        contactid: null,
+        fullname: null
+      };
+      this.state = { item: _item };
+    }
+    else {
+      this.state = { item: this.props.recordData };
+    }
+
+    this._addNewContact = this._addNewContact.bind(this);
+  }
+  //  public componentWillMount(){
+  //    if(this.props.contactid != null && this.props.contactid !=undefined)
+  //    {
+  //     const xrmApiClient = new CdsApiClient(auth, null, HostingEnvironment.TESTING);
+  //     let componentType: ComponentType = "Contact";
+  //     let dataPromise = xrmApiClient.fetchRecordForUpdate(componentType, this.props.contactid);
+  //     // _item.firstname = dataPromise[0].firstname;
+  //     // _item.lastname = dataPromise[0].lastname;
+  //     // _item.middlename = dataPromise[0].middlename;
+  //     // this.setState({ item: _item });
+  //    }
+  //  }
+  public render() {
+    // const { item } = this.state;
+    return (
+      <div className="ms-Grid">
+        <div style={{ display: 'flex', alignItems: 'stretch', height: '40px' }}>
+          <CommandBarButton
+            data-automation-id='test2'
+            iconProps={{ iconName: 'Save' }}
+            onClick={this._addNewContact}
+            text='Save'
+          />
+          {/* <CommandBarButton
+            data-automation-id='test2'
+            iconProps={{ iconName: 'Close' }}
+            onClick={this._addNewContact}
+            text='Save and Close'
+          /> */}
+          <CommandBarButton
+            data-automation-id='test2'
+            iconProps={{ iconName: 'ChromeClose' }}
+            text='Cancel'
+            onClick={() => { this.props.onNavigateGrid(); }}
+          />
+        </div>
+        <div className="ms-Grid-row">
+          <div className="ms-Grid-col ms-sm6 ms-md4 ms-lg2">
+            <div className="docs-TextFieldExample">
+              <TextField
+                label="First Name"
+                underlined
+                required={true}
+                placeholder="First Name is required"
+                onGetErrorMessage={this._getErrorMessage}
+                validateOnLoad={false}
+                validateOnFocusOut
+                value={this.state.item.firstname}
+                onChanged={e => this.handleTextInputChange(e, 'firstname')}
+              />
+
+              <TextField
+                label="Middle Name"
+                underlined
+                value={this.state.item.middlename}
+                onChanged={e => this.handleTextInputChange(e, 'middlename')}
+              />
+
+              <TextField
+                label="Last Name"
+                underlined
+                required={true}
+                placeholder="Last Name is required"
+                validateOnLoad={false}
+                onGetErrorMessage={this._getErrorMessage}
+                validateOnFocusOut
+                value={this.state.item.lastname}
+                onChanged={e => this.handleTextInputChange(e, 'lastname')}
+              />
+              <TextField
+                underlined
+                label="Job Titile"
+                value={this.state.item.jobtitle}
+                onChanged={e => this.handleTextInputChange(e, 'jobtitle')}
+              />
+
+              <TextField
+                label="Account Name"
+                underlined
+              // value={this.state.item.ac}
+              // onChanged={e=> this.handleTextInputChange(e, 'firstname')}
+              />
+
+              <TextField
+                label="Email"
+                underlined
+                value={this.state.item.emailaddress1}
+                onChanged={e => this.handleTextInputChange(e, 'emailaddress1')}
+              />
+
+              <TextField
+                label="Business Phone"
+                underlined
+                value={this.state.item.address1_telephone1}
+                onChanged={e => this.handleTextInputChange(e, 'address1_telephone1')}
+              />
+
+              <TextField
+                label="Mobile Phone"
+                underlined
+                value={this.state.item.address1_telephone2}
+                onChanged={e => this.handleTextInputChange(e, 'address1_telephone2')}
+              />
+
+              <TextField
+                label="Fax"
+                underlined
+                value={this.state.item.address1_fax}
+                onChanged={e => this.handleTextInputChange(e, 'address1_fax')}
+              />
+              <TextField
+                label="Preferred Method of Contact"
+                underlined
+                value={this.state.item.preferredcontactmethodcode}
+                onChanged={e => this.handleTextInputChange(e, 'preferredcontactmethodcode')}
+              />
+              <TextField
+                label="Address 1: Street 1"
+                underlined
+                value={this.state.item.address1_line1}
+                onChanged={e => this.handleTextInputChange(e, 'address1_line1')}
+              />
+              <TextField
+                label="Address 1: Street 2"
+                underlined
+                value={this.state.item.address1_line2}
+                onChanged={e => this.handleTextInputChange(e, 'address1_line2')}
+              />
+              <TextField
+                label="Address 1: Street 3"
+                underlined
+                value={this.state.item.address1_line3}
+                onChanged={e => this.handleTextInputChange(e, 'address1_line3')}
+              />
+              <TextField
+                label="Address 1: City"
+                underlined
+                value={this.state.item.address1_city}
+                onChanged={e => this.handleTextInputChange(e, 'address1_city')}
+              />
+              <TextField
+                label="Address 1: State/Province"
+                underlined
+                value={this.state.item.address1_stateorprovince}
+                onChanged={e => this.handleTextInputChange(e, 'address1_stateorprovince')}
+              />
+              <TextField
+                label="Address 1: ZIP/Postal Code"
+                underlined
+                value={this.state.item.address1_postalcode}
+                onChanged={e => this.handleTextInputChange(e, 'address1_postalcode')}
+              />
+              <TextField
+                label="Address 1: Country/Region"
+                underlined
+                value={this.state.item.address1_country}
+                onChanged={e => this.handleTextInputChange(e, 'address1_country')}
+              />
+            </div>
+          </div>
+        </div>
+      </div >
+    );
+  }
+
+  public _addNewContact() {
+    // const auth: ITokenAuthentication = {
+    //   kind: "token",
+    //   accessToken: "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6Im90cUdaV2xTWDFUdkdpOFI0dUthanBCSUc5ayIsImtpZCI6Im90cUdaV2xTWDFUdkdpOFI0dUthanBCSUc5ayJ9.eyJhdWQiOiJodHRwczovL3RpMXBsYWlub3JnNTNzZzQyNS5jcm0yLmNybWxpdmV0aWUuY29tIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy1wcGUubmV0LzQ5ZDg5MWRjLWQ2YTYtNDdiMy1iMWY4LTViNjE5MWVlY2U0Yi8iLCJpYXQiOjE1MjQyMTI5MTgsIm5iZiI6MTUyNDIxMjkxOCwiZXhwIjoxNTI0MjE2ODE4LCJhY3IiOiIxIiwiYWlvIjoiNDJKZ1lEZzNLNVBCZHVXbmFrMzdPTFkzeXM1M0k2cmJwUmxFV0t4MCt6WjgvRjBsa2dzQSIsImFtciI6WyJwd2QiXSwiYXBwaWQiOiJjZTlmOWYxOC1kZDBjLTQ3M2UtYjliMi00NzgxMjQzNWUyMGQiLCJhcHBpZGFjciI6IjAiLCJmYW1pbHlfbmFtZSI6Ikxhc3QiLCJnaXZlbl9uYW1lIjoiRmlyc3QiLCJpcGFkZHIiOiIxNjcuMjIwLjIzOC4yNiIsIm5hbWUiOiJGaXJzdCBMYXN0Iiwib2lkIjoiMjJlY2QwMWMtMTA0Yi00YmFiLWE5ZjItYzcyNmQ4MDRkN2I5IiwicHVpZCI6IjEwMDM3RkZFQUEyREM3OUMiLCJzY3AiOiJ1c2VyX2ltcGVyc29uYXRpb24iLCJzdWIiOiJsQ3RNX280QVRQOEEtV1pDNkU2cWhfYThPYmp3c01qd1ZpMnlVYWRLUTZvIiwidGlkIjoiNDlkODkxZGMtZDZhNi00N2IzLWIxZjgtNWI2MTkxZWVjZTRiIiwidW5pcXVlX25hbWUiOiJjcm1hZG1pbkBTRzQyNVRlbmFudDUzLmNjc2N0cC5uZXQiLCJ1cG4iOiJjcm1hZG1pbkBTRzQyNVRlbmFudDUzLmNjc2N0cC5uZXQiLCJ1dGkiOiJSalk2S0libXprLUpxWXkwcU9BSUFBIiwidmVyIjoiMS4wIiwid2lkcyI6WyI2MmU5MDM5NC02OWY1LTQyMzctOTE5MC0wMTIxNzcxNDVlMTAiXX0.GLi0r_PkEKPL1ej2GAjgZxWFbEPDgpb0X-Yz-LH1uly18GnADpZh9SFgeZztKp520DDdieovuMBBDq4SJcVEFjZIjfxFjfuGDgZNToObBo3QrvMvlgVastrt7gH5L9PTP4lVoAU_bnYGR5x5Y_rKc0kuR1kFiUUkprLVgvvwm5GmE4z8_3H5E1BZtIg05GiZY72jfvlNh3gISlJBm7gMB7hIvQlEv-KpUeQdVCOIXJ2-2C97ry9zt8SOrQy4aIY8naVU-vLsAfFqkOIQWe2S4ohj2pUtXKYQm9fJy4uzYVKiY-OrVDLNuSny_7MW-WvUsYE4cTaG7nGX2z7Co0jLxQ"
+    // };
+    const xrmApiClient = new CdsApiClient(auth, null, HostingEnvironment.TESTING);
+    let componentType: ComponentType = "Contact";
+    let params: any = this.state.item;
+    params = JSON.stringify(params);
+    delete params.contactid;
+    if(this.state.item.contactid == null) {
+    let responce: Promise<Boolean> = xrmApiClient.SaveNewRecord(componentType, params);
+    if (responce) {
+      alert("Contact saved successfully !!!");
+      this.props.onNavigateGrid();
+    }
+    else {
+      alert("Error in action, Please try again later !!!");
+    }
+  }
+  else {
+    let responce: Promise<Boolean> = xrmApiClient.UpdateRecord(componentType, params, this.state.item.contactid);
+    if (responce) {
+      alert("Contact updated successfully !!!");
+      this.props.onNavigateGrid();
+    }
+    else {
+      alert("Error in action, Please try again later !!!");
+    }
+  }
+  }
+  public handleTextInputChange(value: any, name: string) {
+    this.state.item[name] = value;
+  }
+  public _getErrorMessage(value: string): string {
+    return value.length > 0
+      ? ''
+      : ` Is required.`;
+  }
+}
+export default ContactEntityFormDetails;

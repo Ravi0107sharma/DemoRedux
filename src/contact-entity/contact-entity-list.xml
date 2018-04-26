@@ -1,0 +1,47 @@
+import * as React from "react";
+import { auth } from "../../shared/tokenConfig";
+import { HostingEnvironment } from "../../shared/HostingEnvironment";
+import { CommandBarButton } from 'office-ui-fabric-react/lib/Button';
+
+export class ContactEntityList extends React.Component<{}, {}> {
+    constructor(props: any) {
+        super(props);
+    }
+    public render() {
+        const xrmApiClient = new CdsApiClient(auth, null, HostingEnvironment.TESTING);
+        if (this.state.appState === contactStates.ShowGrid) {
+            return (<div className="ms-Grid">
+                <div className="ms-Grid-row">
+                    <div className="ms-Grid-colms-md12" style={{ display: 'flex', alignItems: 'stretch', height: '40px' }}>
+                        <CommandBarButton
+                            data-automation-id='test'
+                            iconProps={{ iconName: 'Add' }}
+                            text='New Contact'
+                            onClick={this.navigateToNewForm}
+                        />
+                    </div>
+                    <div className="ms-Grid-col ms-md12">
+                        <ContactEntityDisplay
+                            onNavigateEditForm={(item: Entities.Contact) => { this.navigateToEditForm(item); }}
+                        // onNavigateEditForm={(item: Entities.Contact) => { this.navigateToEditForm(item); }}
+                        />
+                    </div>
+                </div>
+            </div>);
+        }
+        else {
+            return (
+                <div className="ms-Grid">
+                    <div className="ms-Grid-row">
+                        <div className="ms-Grid-col ms-md12">
+                            <ContactEntityFormDetails 
+                                onNavigateGrid={() => { this.navigateToGrid(); }}
+                                recordData={this.state.editRecord}
+                            />
+                        </div>
+                    </div>
+                </div>);
+        }
+    }
+}
+

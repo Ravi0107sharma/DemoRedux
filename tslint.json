@@ -1,0 +1,36 @@
+{
+  "extends": ["tslint-react"],
+  "rules": {
+    "object-literal-sort-keys": false,
+    "member-ordering": false,
+    "ordered-imports": [
+      false,
+      {
+        "import-sources-order": "any",
+        "named-imports-order": "case-insensitive"
+      }
+    ],
+    "only-arrow-functions": false,
+    "no-empty-interface": false,
+    "member-access": false,
+    "max-classes-per-file": false,
+    "no-empty": false,
+    "trailing-comma": false,
+    "no-var-requires": false,
+    "no-unused-variable": true,
+    "variable-name": false,
+    "object-literal-key-quotes": false,
+    "no-angle-bracket-type-assertion": false,
+    "arrow-parens": false,
+    "interface-over-type-literal": false,
+    "forin": false
+  },
+  "alwaysShowRuleFailuresAsWarnings": true,
+  "autoFixOnSave": true,
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  }
+}
